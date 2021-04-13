@@ -1,0 +1,19 @@
+{
+  "name": "jirai-server",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makoto-jp/jirai-server.git"
+  },
+  "author": "makoto-jp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/makoto-jp/jirai-server/issues"
+  },
+  "homepage": "https://github.com/makoto-jp/jirai-server#readme"
+}
