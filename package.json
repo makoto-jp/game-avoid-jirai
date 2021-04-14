@@ -2,8 +2,10 @@
   "name": "jirai-server",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "main": "src/index.js",
   "scripts": {
+    "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +17,13 @@
   "bugs": {
     "url": "https://github.com/makoto-jp/jirai-server/issues"
   },
-  "homepage": "https://github.com/makoto-jp/jirai-server#readme"
+  "homepage": "https://github.com/makoto-jp/jirai-server#readme",
+  "dependencies": {
+    "fastify": "^3.14.2",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.24.0"
+  }
 }

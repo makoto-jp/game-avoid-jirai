@@ -1,1 +1,4 @@
 *.sw[op]
+/node_modules
+/package-lock.json
+/config.json
