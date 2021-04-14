@@ -1,8 +1,7 @@
 import fastify from 'fastify';
-import { v4 as uuidv4 } from 'uuid';
 
 import session_manager from './services/session-manager.js';
-import { MineField, BadRequest, schemas, ServerError, SessionData } from './model/index.js';
+import { MineField, BadRequest, schemas, ServerError } from './model/index.js';
 
 const app = fastify();
 import { datasource } from './datasource/index.js';
@@ -38,7 +37,6 @@ app.post('/sessions',
     const field = await datasource.getMineField(field_id);
 
     const session = await session_manager.createSession(field);
-    console.log(session.data.status);
     return session.data;
   }
 );
@@ -50,12 +48,12 @@ app.put('/sessions/:session_id/touch',
     if (!(position instanceof Array)) { // TODO validate each items
       throw new BadRequest('position must be Array<number>');
     }
+
     const session = await session_manager.getSession(req.params.session_id);
     if (await session.touch(position)) {
       await session_manager.removeSession(session.id);
     }
 
-    console.log(session.data.status);
     return session.data;
   }
 );

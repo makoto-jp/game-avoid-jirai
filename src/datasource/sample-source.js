@@ -1,5 +1,5 @@
 
-import { MineField, SessionData, ServerError, BadRequest } from '../model/index.js';
+import { MineField, ServerError, BadRequest } from '../model/index.js';
 import DataSourceBase from './datasource-base.js';
 
 const mine_positions = [
@@ -15,7 +15,8 @@ const mine_positions = [
 
 
 /**
- * @borrows DataSouceBase as SampleDataSource
+ * とりあえず動く用のデータソース.
+ * MineFieldは一つのみでオンメモリで保持するだけ.
  */
 class SampleDataSource extends DataSourceBase {
 
@@ -47,35 +48,6 @@ class SampleDataSource extends DataSourceBase {
     }
     throw new BadRequest(`${id} does not exist.`);
   }
-
-  async addSession(session) {
-    if (this.#sessions.size > 100) {
-      throw new ServerError('too many active sessions');
-    }
-    const session_id = session.session_id;
-    if (this.#sessions.has(session_id)) {
-      throw new ServerError(`session_id(${session_id}) duplicated`);
-    }
-
-    this.#sessions.set(session_id, session);
-  }
-
-  async updateSession(session) {
-    const session_id = session_session_id;
-
-    if (!this.#sessions.has(session_id)) {
-      throw new ServerRequest(`session(${session_id}) not found`);
-    }
-    this.#sessions.set(session_id, session);
-  }
-
-  async getSession(session_id) {
-    if (!this.#sessions.has(session_id)) {
-      throw new BadRequest(`session not found`);
-    }
-    return this.#sessions.get(session_id);
-  }
-
 }
 
 export default SampleDataSource;

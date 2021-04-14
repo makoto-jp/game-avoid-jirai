@@ -1,3 +1,4 @@
+// TODO: 基底クラスを継承させる設計をやめたい
 /**
  * jira-serverのデータを読み書きするクラスの基底クラス.
  * @abstract
@@ -27,30 +28,6 @@ class DataSourceBase {
    * @return {import('../model').MineField}
    */
   async getMineField(id) {
-    throw new Error('needs implementation');
-  }
-
-
-  /**
-   * @param {import('../model').SessionData} session 
-   * @return {Promise<SessionData>}
-   */
-  async addSession(session) {
-    throw new Error('needs implementation');
-  }
-
-  /**
-   * @param {import('../model').SessionData} session 
-   * @return {Promise<SessionData>}
-   */
-  async updateSession(session) {
-    throw new Error('needs implementation');
-  }
-
-  /**
-   * @return {Promise<import('../model').SessionData>}
-   */
-  async getSession(session_id) {
     throw new Error('needs implementation');
   }
 }

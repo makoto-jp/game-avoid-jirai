@@ -146,12 +146,11 @@ class SchemaBuilder {
     }
     this.#schema.response['400'] = BadRequest.responseSchema;
     this.#schema.response['500'] = ServerError.responseSchema;
-    console.log(this.#schema.response);
     return {
       schema: this.#schema
-    }
+    };
   }
-};
+}
 
 /**
  * @returns {SchemaBuilder}
@@ -162,7 +161,7 @@ schemas.with = (opts) => {
     builder.withResponse(opts.response);
   }
   return builder.build();
-}
+};
 
 export {
   MineField,
