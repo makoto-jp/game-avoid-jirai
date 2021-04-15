@@ -2,7 +2,13 @@
 import { MineField, ServerError, BadRequest } from '../model/index.js';
 import DataSourceBase from './datasource-base.js';
 
-const mine_positions = [
+const sample_3x3 = [
+  [0, 0], [0, 1], [0, 2],
+  [1, 0], [1, 2],
+  [2, 0], [2, 1], [2, 2],
+];
+
+const sample_8x8 = [
   [ 0, 0 ], [ 0, 5], [ 0, 6],
   [ 1, 1 ], [1, 3], [1, 7],
   [ 2, 3], [ 2, 7],
@@ -28,8 +34,9 @@ class SampleDataSource extends DataSourceBase {
 
   constructor() {
     super();
-    const mf = new MineField('sample-id', 'sample', [8, 8], mine_positions);
-    this.#fields = [ mf ];
+    this.#fields = [];
+    this.#fields.push(new MineField('sample_8x8', 'sample_8x8', [8, 8], sample_8x8));
+    this.#fields.push(new MineField('sample_3x3', 'sample_3x3', [3, 3], sample_3x3));
   }
 
   async initialize() {

@@ -14,7 +14,6 @@ const F = {
   OUT_OF_FIELD: -3,
 };
 
-
 /**
  * state 上の 特定の位置 の値を取得する
  * @param {Array<number>} position
@@ -56,6 +55,9 @@ function searchMines(stack, state) {
   }
 
   const base_pos = stack.pop();
+  if (getValue(base_pos, state) !== F.UNKNOWN) {
+    return;
+  }
   const target_pos = Array(base_pos.length);
   const targets = [];
 
@@ -77,18 +79,36 @@ function searchMines(stack, state) {
     }
   }
 
-  if (n_mines !== 0) {
-    setValue(n_mines, base_pos, state);
-  } else {
+  setValue(n_mines, base_pos, state);
+  if (n_mines === 0) {
     for (const p of targets) {
       const v = getValue(p, state);
       if (v === F.UNKNOWN) {
-        stack.push(v);
+        stack.push(p);
       }
     }
-    searchMines(stack, state);
   }
+  searchMines(stack, state);
+}
 
+/**
+ * @param {Array} state 
+ * @return {Boolean} ゲームクリアなら true
+ */
+function isSwept(state) {
+  const stack = [ state ];
+
+  while (stack.length > 0) {
+    const elm = stack.pop();
+    if (elm instanceof Array) {
+      for (const e of elm) {
+        stack.push(e);
+      }
+    } else if (elm === F.UNKNOWN) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /**
@@ -113,7 +133,7 @@ class Session {
   /**
    * 
    * @param {Array<number>} position 
-   * @return {Promise<Boolean>} true if touched a mine.
+   * @return {Promise<Boolean>} true if touched a mine or game cleared.
    */
   async touch(position) {
     const state = this.#data.state;
@@ -138,6 +158,12 @@ class Session {
 
     const stack = [ position ];
     searchMines(stack, state);
+
+    if (isSwept(state)) {
+      this.status.code = 1;
+      this.status.text = 'game clear';
+      return true;
+    }
 
     // 地雷の位置を UNKNOWN に戻す
     for (const mine_pos of field.mines_layout) {
@@ -201,7 +227,7 @@ class SessionManager {
     session.state = state;
 
     session.status.text = 'still alive';
-    session.status.code = 1;
+    session.status.code = 0;
     
     return session;
   }
