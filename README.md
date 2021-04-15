@@ -73,7 +73,6 @@ PUT /sessions/:session_id/touch
 
 地雷を踏んだ場合は
 ```
-```
 {
   "session_id": {unique_session_id},
   "status": {
