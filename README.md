@@ -26,7 +26,7 @@ POST /sessions
 {
   "session_id": {unique_session_id},
   "status": {
-    "code": 1,
+    "code": 0,
     "text" "still alive"
   },
   "state": [
