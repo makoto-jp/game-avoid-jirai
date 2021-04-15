@@ -199,6 +199,7 @@ class Session {
  */
 class SessionManager {
 
+  /** @type {Map<String, Session>} */
   #sessions = new Map();
 
   constructor() {
@@ -209,7 +210,7 @@ class SessionManager {
    * @return {Promise<Session>}
    */
   async createSession(field) {
-    if (this.#sessions.size > 100) {
+    if (this.#sessions.size > 500) {
       throw new ServerError('too many sessions');
     }
     const session = new Session(uuidv4(), field);
@@ -234,6 +235,21 @@ class SessionManager {
 
   async removeSession(id) {
     this.#sessions.delete(id);
+    console.log(`session removed. id=${id}`);
+  }
+
+  removeOldSession() {
+    const olds = [];
+    const now = Date.now();
+    for (const [ session_id, session ] of this.#sessions) {
+      if (now - session.data.created_at > 60 * 1000) {
+        olds.push(session_id);
+      }
+    }
+
+    for (const old_id of olds) {
+      this.removeSession(old_id);
+    }
   }
 
   /**
@@ -243,7 +259,7 @@ class SessionManager {
   async getSession(id) {
     const session = this.#sessions.get(id);
     if (!session) {
-      throw new BadRequest(`session(${id}) not found. `);
+      throw new BadRequest(`session(${id}) not found.`);
     }
     return session;
   }
@@ -251,5 +267,10 @@ class SessionManager {
 }
 
 const instance = new SessionManager();
+
+// TODO ちゃんとインターバルを管理しろ
+setInterval(() => {
+  instance.removeOldSession();
+}, 30 * 1000);
 
 export default instance;

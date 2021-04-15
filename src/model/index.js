@@ -55,6 +55,7 @@ class SessionData {
     this.session_id = session_id;
     this.field_id = field_id;
     this.field_size = field_size;
+    this.created_at = (new Date()).getTime();
     this.state = null; // must be set later.
 
     /** @type {SessionStatus} */
@@ -70,6 +71,7 @@ class SessionData {
       session_id: { type: 'string'},
       field_id: { type: 'string' },
       field_size: { type: 'array', items: { type: 'number'} },
+      created_at: { type: 'number' },
       state: { type: 'array' },
       status: {
         type: 'object',
